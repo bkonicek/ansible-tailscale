@@ -3,6 +3,10 @@ Role Name
 
 Ansible role to install Tailscale agent on a Linux server.
 
+Supported Operating Systems:
+- Ubuntu
+- CentOS (7 & 8)
+
 Requirements
 ------------
 
