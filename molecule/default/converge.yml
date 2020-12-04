@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    tailscale_key: "{{ lookup('env', 'TAILSCALE_KEY') }}"
+  tasks:
+    - name: "Include tailscale"
+      include_role:
+        name: "ansible-tailscale"
+      tags: ["check"]
+    - name: "output IP"
+      debug:
+        msg: "{{ inventory_hostname }}: {{ tailscale_ip }}"
