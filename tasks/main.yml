@@ -1,64 +1,8 @@
-- name: Install for Debian/Ubuntu
-  block:
-    - name: install prereq packages
-      apt:
-        name: gpg-agent
-        state: present
-        update_cache: yes
+- name: Install Tailscale
+  include_tasks: setup-{{ ansible_distribution }}.yml
 
-    - name: add Tailscale apt key
-      apt_key:
-        url: "https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}.gpg"
-        state: present
-
-    - name: add Tailscape apt repo
-      apt_repository:
-        repo: "deb https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main"
-        state: present
-        update_cache: yes
-        filename: tailscale
-        mode: '0600'
-
-    - name: install Tailscale
-      apt:
-        name: tailscale
-        state: present
-  when: ansible_distribution != "Red Hat Enterprise Linux" and ansible_distribution != "CentOS"
-  tags: ["debian"]
-
-- name: Install for CentOS/RHEL
-  block:
-    - name: Install prereq packages
-      dnf:
-          name: ["epel-release", "dnf-plugins-core"]
-          update_cache: yes
-          state: present
-
-    - name: add Tailscape dnf repo
-      command: "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/{{ ansible_distribution_major_version }}/tailscale.repo"
-      args:
-        creates: /etc/yum.repos.d/tailscale.repo
-        warn: false
-
-    - name: Install tailscale
-      dnf:
-          name: tailscale
-          update_cache: yes
-          state: present
-
-  when: ansible_distribution == "Red Hat Enterprise Linux" or ansible_distribution == "CentOS"
-  tags: ["centos"]
-
-- name: create /dev/net (for Docker hosts)
-  file:  # noqa 208
-      path: /dev/net
-      state: directory
-  when: ansible_virtualization_type == "docker"
-
-- name: create tun filesystem node (for Docker hosts)
-  command: mknod /dev/net/tun c 10 200
-  args:
-      creates: /dev/net/tun
+- name: Run Docker-specific setup tasks
+  include_tasks: docker.yml
   when: ansible_virtualization_type == "docker"
 
 - name: start tailscale service

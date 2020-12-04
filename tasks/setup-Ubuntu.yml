@@ -1,0 +1,23 @@
+- name: install prereq packages
+  apt:
+    name: gpg-agent
+    state: present
+    update_cache: yes
+
+- name: add Tailscale apt key
+  apt_key:
+    url: "https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}.gpg"
+    state: present
+
+- name: add Tailscape apt repo
+  apt_repository:
+    repo: "deb https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+    filename: tailscale
+    mode: '0600'
+
+- name: install Tailscale
+  apt:
+    name: tailscale
+    state: present
