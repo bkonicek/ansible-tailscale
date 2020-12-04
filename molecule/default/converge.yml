@@ -9,7 +9,6 @@
     - name: "Include ansible-tailscale"
       include_role:
         name: "ansible-tailscale"
-      tags: ["check"]
     - name: "output IP"
       debug:
         msg: "{{ inventory_hostname }}: {{ tailscale_ip }}"
