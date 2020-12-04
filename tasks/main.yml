@@ -1,10 +1,6 @@
 - name: Install Tailscale
   include_tasks: setup-{{ ansible_distribution }}.yml
 
-- name: Run Docker-specific setup tasks
-  include_tasks: docker.yml
-  when: ansible_virtualization_type == "docker"
-
 - name: start tailscale service
   service:
       name: tailscaled

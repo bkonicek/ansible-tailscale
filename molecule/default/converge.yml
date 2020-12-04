@@ -4,7 +4,9 @@
   vars:
     tailscale_key: "{{ lookup('env', 'TAILSCALE_KEY') }}"
   tasks:
-    - name: "Include tailscale"
+    - name: Run docker-specific tasks for tailscale
+      include_tasks: docker.yml
+    - name: "Include ansible-tailscale"
       include_role:
         name: "ansible-tailscale"
       tags: ["check"]
