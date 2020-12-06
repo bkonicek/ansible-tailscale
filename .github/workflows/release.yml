@@ -4,6 +4,8 @@ on:
   push:
     tags:
     - '*'
+    paths-ignore:
+      - "**/README.md"
 
 jobs:
   release:

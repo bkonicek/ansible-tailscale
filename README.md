@@ -40,7 +40,7 @@ Including an example of how to use your role (for instance, with variables passe
       vars_files:
          - tailscale.yml
       roles:
-         - { role: ansible-tailscale }
+         - { role: bkonicek.ansible_tailscale }
 
 License
 -------
