@@ -3,15 +3,38 @@
       name: ["epel-release", "dnf-plugins-core"]
       update_cache: yes
       state: present
+  when: ansible_distribution_major_version|int >= 8
 
-- name: add Tailscape dnf repo
+- name: Install prereq packages
+  yum:
+      name: ["yum-utils"]
+      update_cache: yes
+      state: present
+  when: ansible_distribution_major_version|int == 7
+
+- name: add Tailscale dnf repo
   command: "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/centos/{{ ansible_distribution_major_version }}/tailscale.repo"
   args:
     creates: /etc/yum.repos.d/tailscale.repo
     warn: false
+  when: ansible_distribution_major_version|int >= 8
 
-- name: Install tailscale
+- name: add Tailscale yum repo
+  command: yum-config-manager --add-repo https://pkgs.tailscale.com/stable/centos/7/tailscale.repo
+  args:
+    creates: /etc/yum.repos.d/tailscale.repo
+  when: ansible_distribution_major_version|int == 7
+
+- name: Install tailscale (dnf)
   dnf:
       name: tailscale
       update_cache: yes
       state: present
+  when: ansible_distribution_major_version|int >= 8
+
+- name: Install tailscale (yum)
+  yum:
+    name: tailscale
+    update_cache: yes
+    state: present
+  when: ansible_distribution_major_version|int == 7

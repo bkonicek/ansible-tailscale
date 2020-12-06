@@ -4,20 +4,8 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: centos
-    image: docker.io/alekseychudov/centos8-systemd
-    tmpfs:
-      - /run
-      - /tmp
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    capabilities:
-      - SYS_ADMIN
-      - NET_ADMIN
-    command: "/lib/systemd/systemd"
-    pre_build_image: true
-  - name: ubuntu
-    image: geerlingguy/docker-ubuntu2004-ansible
+  - name: ${MOLECULE_DISTRO:-instance}
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
     tmpfs:
       - /run
       - /tmp
@@ -34,13 +22,9 @@ verifier:
   name: ansible
   env:
     TAILSCALE_KEY: ${TAILSCALE_KEY:-""}
-  config_options:
-    defaults:
-      interpreter_python: auto_silent
-      callback_whitelist: profile_tasks, timer, yaml
-    ssh_connection:
-      pipelining: false
-lint: |
-  set -e
-  yamllint .
-  ansible-lint .
+  # config_options:
+  #   defaults:
+  #     interpreter_python: auto_silent
+  #     callback_whitelist: profile_tasks, timer, yaml
+  #   ssh_connection:
+  #     pipelining: false
