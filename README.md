@@ -42,6 +42,12 @@ Including an example of how to use your role (for instance, with variables passe
       roles:
          - { role: bkonicek.ansible_tailscale }
 
+`tailscale.yml` should be in the following format (just remember to encrypt it first):
+
+```
+tailscale_key: 'tskey-abc123...'
+```
+
 License
 -------
 
