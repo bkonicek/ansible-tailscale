@@ -1,0 +1,63 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  lint:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup Python 3
+        uses: actions/setup-python@v2.1.4
+        with:
+          python-version: 3.x  
+
+      - name: Install lint dependencies
+        run: pip3 install --upgrade pip yamllint ansible-lint
+      
+      - name: Lint role
+        run: |
+          yamllint .
+          ansible-lint .
+          
+  molecule:
+    name: Molecule test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro: [centos7, centos8, ubuntu2004, ubuntu1804]
+        
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v2
+      
+      - name: Setup Python 3
+        uses: actions/setup-python@v2.1.4
+        with:
+          python-version: 3.x 
+          
+      - name: Install dependencies
+        run: pip3 install --upgrade pip ansible molecule[docker] docker
+        
+      - name: Run molecule test
+        run: molecule test
+        env:
+          MOLECULE_DISTRO: ${{matrix.distro}}
