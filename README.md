@@ -10,7 +10,12 @@ Supported Operating Systems:
 Requirements
 ------------
 
+- Ansible 2.9.x
 - [Tailscale](https://tailscale.com/) account and reusable authentication key created.
+
+```
+NOTE: At this time there is no API for Tailscale, so it's not possible to automatically remove
+hosts created by Molecule, 
 
 Role Variables
 --------------
