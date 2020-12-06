@@ -34,11 +34,9 @@ galaxy_info:
   platforms:
   - name: Ubuntu
     versions:
-    - all
-  - name: Debian
-    versions:
-    - all
-  - name: CentOS
+    - bionic
+    - focal
+  - name: EL
     versions:
     - 7
     - 8
