@@ -1,0 +1,13 @@
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: create /dev/net
+      file:  # noqa 208
+          path: /dev/net
+          state: directory
+
+    - name: create tun filesystem node
+      command: mknod /dev/net/tun c 10 200
+      args:
+          creates: /dev/net/tun
