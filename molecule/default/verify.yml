@@ -3,8 +3,8 @@
 
 - name: Verify
   hosts: all
-  gather_facts: false
+  gather_facts: true
   tasks:
-  - name: Example assertion
+  - name: Assert tailscale0 interface is created
     assert:
-      that: true
+      that: ansible_tailscale0 is defined
