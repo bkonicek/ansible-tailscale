@@ -15,6 +15,7 @@ platforms:
       - SYS_ADMIN
       - NET_ADMIN
     command: "/lib/systemd/systemd"
+    privileged: true
     pre_build_image: true
 provisioner:
   name: ansible
