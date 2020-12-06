@@ -1,3 +1,5 @@
+![CI](https://github.com/bkonicek/ansible-tailscale/workflows/CI/badge.svg)
+
 Role Name
 =========
 
