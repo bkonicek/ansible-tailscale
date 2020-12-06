@@ -22,9 +22,9 @@ verifier:
   name: ansible
   env:
     TAILSCALE_KEY: ${TAILSCALE_KEY:-""}
-  # config_options:
-  #   defaults:
-  #     interpreter_python: auto_silent
-  #     callback_whitelist: profile_tasks, timer, yaml
-  #   ssh_connection:
-  #     pipelining: false
+  config_options:
+    defaults:
+      interpreter_python: auto_silent
+      callback_whitelist: profile_tasks, timer, yaml
+    ssh_connection:
+      pipelining: false
