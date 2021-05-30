@@ -17,12 +17,11 @@
   command: "tailscale up --authkey={{ tailscale_key }}"
   when: state.failed
 
-- name: refresh facts for tailscale interface
-  setup:
-    gather_subset:
-      - network
-    filter: '*tailscale*'
+- name: check if tailscale has an IP address
+  command: tailscale ip
+  register: ip_addr
+  failed_when: ip_addr.stdout == ""
 
 - name: Set Tailscale IP as host fact
   set_fact:
-    tailscale_ip: "{{ ansible_tailscale0.ipv4.address }}"
+    tailscale_ip: "{{ ip_addr.stdout }}"
