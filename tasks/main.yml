@@ -20,7 +20,7 @@
 - name: check if tailscale has an IP address
   command: tailscale ip
   register: ip_addr
-  failed_when: ip_addr.stdout | bool
+  failed_when: ip_addr.stdout == "" # noqa 602
   changed_when: false
 
 - name: Set Tailscale IP as host fact
