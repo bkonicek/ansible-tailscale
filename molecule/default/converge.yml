@@ -10,3 +10,4 @@
     - name: "output IP"
       debug:
         msg: "{{ inventory_hostname }}: {{ tailscale_ip }}"
+      changed_when: false
